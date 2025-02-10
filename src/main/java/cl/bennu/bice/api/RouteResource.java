@@ -20,6 +20,7 @@ public class RouteResource {
     @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     public Response parse(Request request) {
+        System.out.println("llegue al endpoint");
         List<String> routes = routeService.parse(request);
 
         return Response.ok(routes).build();
