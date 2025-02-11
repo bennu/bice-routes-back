@@ -21,7 +21,6 @@ public class RouteResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response parse(Request request) {
         List<String> routes = routeService.parse(request);
-
         return Response.ok(routes).build();
     }
 
