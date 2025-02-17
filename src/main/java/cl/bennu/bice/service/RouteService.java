@@ -9,7 +9,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,8 @@ import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class RouteService {
+
+    Response response = new Response();
 
     public List<String> parse(Request request) throws IOException {
 
@@ -37,6 +40,8 @@ public class RouteService {
         System.out.println("rutas fallidas en parse "+routesFail);
 
 
+        response.setNewRoutes(newRoutes);
+        //saveFile(newRoutes, "C:\\Users\\rmell\\Desktop\\new_routes.txt");
         return newRoutes;
     }
 
@@ -83,6 +88,18 @@ public class RouteService {
         List<String> oldRoutes = Arrays.asList(decodedContent.split("\n"));
 
         return oldRoutes;
+    }
+
+
+    public ByteArrayOutputStream saveFile() throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(byteArrayOutputStream))) {
+            for (String route : response.getNewRoutes()) {
+                writer.write(route);
+                writer.newLine();
+            }
+        }
+        return byteArrayOutputStream;
     }
 
 }
