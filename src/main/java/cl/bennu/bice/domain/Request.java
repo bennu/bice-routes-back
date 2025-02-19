@@ -9,4 +9,5 @@ public class Request {
 
     private String base64;
     private List<String> base64List;
+
 }
