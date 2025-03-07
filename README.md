@@ -1,45 +1,28 @@
-﻿GESTOR DE RUTAS
+﻿Gestor de Rutas BICE
 =============
 
-# API de Gestión de Rutas
-Este proyecto es un servicio REST para manejar rutas API. Permite comparar endpoints antiguos y nuevos, detectando discrepancias y generando reportes.
+[![License](https://img.shields.io/github/license/bennu/commons?label=License&logo=opensourceinitiative)](https://opensource.org/license/mit-0)
+[![Supported JVM Versions](https://img.shields.io/badge/JVM-17--21-brightgreen.svg?label=JVM&logo=openjdk)](https://adoptium.net/es/temurin/releases/)
 
-# Dependencias
+BICE Routes, an application to convert open API specifications to routes.txt (BICE specific file format).
+
+Building
+--------
+
+Building requires a Java JDK and [Apache Maven](https://maven.apache.org/).
+The required Java version is found in the `pom.xml` as the `maven.compiler.source` property.
+
+From a command shell, run `mvn` without arguments to invoke the default Maven goal to run all tests and checks.
+
+License
+-------
+
+This code is licensed under the [MIT License](https://opensource.org/license/mit).
+
+Dependencies
+------------
+
+- quarkus 3.19.2
+- bennu-commons 1.1.0
 - lombok 1.18.36
-- jackson-core 2.18.2
-- jackson-annotations 2.18.2
-- commons-lang3 3.17.0
-- commons-io 2.18.0
-
-# Requisitos
-- JDK 21
-- Maven 3.8.1 o superior
-
-# Licencias
-Este código está licenciado bajo la Licencia MIT.
-
-## Requisitos
-Instalación: Para compilar y ejecutar el proyecto, sigue los siguientes pasos:
-
-1. Clona el repositorio:
-    ```sh
-    git clone <URL_DEL_REPOSITORIO>
-    cd <NOMBRE_DEL_PROYECTO>
-    ```
-
-2. Compila el proyecto:
-    ```sh
-    mvn clean install
-    ```
-
-3. Ejecuta el proyecto:
-    ```sh
-    mvn quarkus:dev
-    ```
-
-## Pruebas
-Para ejecutar las pruebas, utiliza el siguiente comando:
-```sh
-mvn test
-
-
+- jackson 2.18.3
