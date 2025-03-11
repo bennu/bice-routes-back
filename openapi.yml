@@ -1,0 +1,31 @@
+---
+openapi: 3.1.0
+components:
+  schemas:
+    Request:
+      type: object
+      properties:
+        routes:
+          type: string
+        openApiSpecs:
+          type: array
+          items:
+            type: string
+paths:
+  /v1/routes:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request"
+        required: true
+      responses:
+        "200":
+          description: OK
+      summary: Parse
+      tags:
+        - Route Resource
+info:
+  title: routes API
+  version: 0.0.1
