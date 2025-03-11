@@ -21,13 +21,18 @@ public class RouteService {
     private final Logger LOGGER = Logger.getLogger(this.getClass());
 
     public Response parse(Request request) throws AppException {
+        this.validate(request);
+
         List<String> newRoutes = new ArrayList<>();
         List<String> routesFail = new ArrayList<>();
+        List<String> oldRoutes = new ArrayList<>();
 
         //rutas antiguas del request
-        List<String> oldRoutes = decodeBase64ToRoutes(request.getBase64());
+        if (StringUtils.isNotBlank(request.getRoutes())) {
+            oldRoutes = decodeBase64ToRoutes(request.getRoutes());
+        }
 
-        for (String base64 : request.getBase64List()) {
+        for (String base64 : request.getOpenApiSpecs()) {
             byte[] openapi = java.util.Base64.getDecoder().decode(base64);
             OpenAPI openAPIProcessed = yamlProcess(openapi);
             process(openAPIProcessed, newRoutes, oldRoutes, routesFail);
@@ -41,6 +46,11 @@ public class RouteService {
         LOGGER.debug("Rutas parseadas");
 
         return response;
+    }
+
+    private void validate(Request request) throws AppException {
+        if (request == null) throw new AppException("no hay parametros de entrada");
+        if (request.getOpenApiSpecs() == null) throw new AppException("no hay parametros de entrada");
     }
 
     public OpenAPI yamlProcess(byte[] openapi) throws AppException {
