@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
 
@@ -27,15 +28,29 @@ public class RouteService {
         List<String> routesFail = new ArrayList<>();
         List<String> oldRoutes = new ArrayList<>();
 
-        //rutas antiguas del request
+        // to handle error routes
         if (StringUtils.isNotBlank(request.getRoutes())) {
             oldRoutes = decodeBase64ToRoutes(request.getRoutes());
         }
 
-        for (String base64 : request.getOpenApiSpecs()) {
-            byte[] openapi = java.util.Base64.getDecoder().decode(base64);
+        // case where you get the base64 of the string
+        if (StringUtils.isNotBlank(request.getOpenApiSpec())) {
+            byte[] openapi = java.util.Base64.getDecoder().decode(request.getOpenApiSpec());
             OpenAPI openAPIProcessed = yamlProcess(openapi);
             process(openAPIProcessed, newRoutes, oldRoutes, routesFail);
+        }
+
+        // case where you get the base64 from the list
+        if (CollectionUtils.isNotEmpty(request.getOpenApiSpecs())) {
+            for (String base64 : request.getOpenApiSpecs()) {
+                byte[] openapi = java.util.Base64.getDecoder().decode(base64);
+                OpenAPI openAPIProcessed = yamlProcess(openapi);
+                process(openAPIProcessed, newRoutes, oldRoutes, routesFail);
+            }
+        }
+
+        if (newRoutes.isEmpty() && routesFail.isEmpty()) {
+            throw new AppException("No se pudo parsear el OpenApiSpec");
         }
 
         Response response = new Response();
@@ -49,8 +64,9 @@ public class RouteService {
     }
 
     private void validate(Request request) throws AppException {
-        if (request == null) throw new AppException("no hay parametros de entrada");
-        if (request.getOpenApiSpecs() == null) throw new AppException("no hay parametros de entrada");
+        if (request == null) throw new AppException("No hay parametros de entrada");
+        if (request.getOpenApiSpecs() == null && request.getOpenApiSpec() == null)
+            throw new AppException("No hay parametros de entrada");
     }
 
     public OpenAPI yamlProcess(byte[] openapi) throws AppException {

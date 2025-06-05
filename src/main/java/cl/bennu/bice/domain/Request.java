@@ -11,5 +11,6 @@ public class Request {
 
     private String routes;
     private List<String> openApiSpecs;
+    private String openApiSpec;
 
 }
