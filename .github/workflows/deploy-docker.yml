@@ -34,7 +34,7 @@ jobs:
       - name: Deploy in Docker
         run: |
           echo $IMAGE_REGISTRY_PASSWORD | docker login $IMAGE_REGISTRY_URL -u $IMAGE_REGISTRY_USER --password-stdin
-          docker rm -f "$CONTAINER_NAME"
+          docker rm -f "$CONTAINER_NAME" || true
           docker run -d --restart=unless-stopped --name "$CONTAINER_NAME" -p "$PUBLISH_PORT:$EXPOSE_PORT" "$IMAGE_NAME:$IMAGE_TAG"
           if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME)" != "true" ]; then
               echo "El contenedor $CONTAINER_NAME no inicio como se esperaba "
