@@ -1,6 +1,6 @@
 name: Deploy to Production
 on:
-  push:
+  workflow_dispatch:
 
 permissions:
   packages: read
