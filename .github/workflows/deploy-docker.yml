@@ -10,7 +10,7 @@ permissions:
 jobs:
   deploy_prod:
     runs-on: ec2-bice
-    if: startsWith(github.ref, 'refs/tags')
+    if: github.ref == 'refs/heads/feat/deploy-backend'
     timeout-minutes: 15
     env: 
       IMAGE_TAG: latest
