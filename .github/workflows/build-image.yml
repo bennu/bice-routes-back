@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - master
+      - 'feat/deploy-backend'
     # Sequence of patterns matched against refs/tags
     tags:
       - '*'
